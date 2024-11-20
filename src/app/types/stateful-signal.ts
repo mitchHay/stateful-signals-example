@@ -5,13 +5,9 @@ import { StatefulValue } from "./stateful-value";
 
 export class StatefulSignal<TInput> {
   // The $signalSubject is used here in the event we want to re-trigger the provided observable.
-  private readonly $signalSubject: Subject<TInput | void>;
+  private readonly $signalSubject = new Subject<TInput | void>();
   private readonly isLoading = signal(false);
-
-  constructor(subject?: Subject<TInput | void>) {
-    // Allow for custom subjects, in the event we want to push some data to the observable.
-    this.$signalSubject = subject ?? new Subject<TInput | void>();
-  }
+  private readonly error = signal(null);
 
   create<TOutput>(createObservable: (input?: TInput) => Observable<TOutput>): Signal<StatefulValue<TOutput>> {
     // First determine the inner observable, allowing us to accurately call rxjs operators.
@@ -25,27 +21,34 @@ export class StatefulSignal<TInput> {
     return toSignal(
       this.$signalSubject.pipe(
         startWith(null),
-        tap(() => this.isLoading.set(true)),
+        tap(() => {
+          this.error.set(null);
+          this.isLoading.set(true);
+        }),
         switchMap(inputValue => determineInnerObservable(inputValue).pipe(
-            take(1),
-            map(outputValue => ({
-              result: outputValue as TOutput,
-              error: null,
-              isLoading: this.isLoading.asReadonly(),
-            })),
-            catchError(error => of({
+          take(1),
+          map(outputValue => ({
+            result: outputValue as TOutput,
+            error: this.error.asReadonly(),
+            isLoading: this.isLoading.asReadonly(),
+          })),
+          catchError(error => {
+            this.error.set(error);
+
+            return of({
               result: null,
-              error: error,
+              error: this.error.asReadonly(),
               isLoading: this.isLoading.asReadonly(),
-            })),
-            finalize(() => this.isLoading.set(false)),
-          )
+            });
+          }),
+          finalize(() => this.isLoading.set(false)),
+        )
         ),
       ),
       {
         initialValue: {
           result: null,
-          error: null,
+          error: this.error.asReadonly(),
           isLoading: this.isLoading.asReadonly(),
         },
       },
