@@ -1,0 +1,30 @@
+<main>
+  <h1>Resource Signals | Example (Angular 19)</h1>
+
+  <app-plug title="Resource Signals">
+    <span>
+      This Angular example is used to demonstrate the new <a href="https://angular.dev/guide/signals/resource" target="_blank">resource signal</a> added in Angular 19.
+    </span>
+  </app-plug>
+
+  <h2>Demo</h2>
+
+  @defer (when !welcomeMessage.isLoading()) {
+    <p>{{ welcomeMessage.value() }}</p>
+  } @placeholder {
+    <p>Getting welcome message...</p>
+  }
+
+  @if (!!welcomeMessage.error()) {
+    <p>Something went wrong...</p>
+  }
+
+  <form [formGroup]="formGroup">
+    <div class="form-control">
+      <label for="throw-error">Throw error</label>
+      <input type="checkbox" formControlName="throwError" id="throw-error" />
+    </div>
+  </form>
+
+  <button (click)="onFetchWelcomeMessage()">Fetch welcome message</button>
+</main>

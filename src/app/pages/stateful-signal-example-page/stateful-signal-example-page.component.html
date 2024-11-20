@@ -1,0 +1,30 @@
+<main>
+  <h1>Stateful Signals | Example</h1>
+
+  <app-plug title="Stateful Signals">
+    <span>
+      This Angular example is used to demonstrate the stateful signal approach that I explained <a href="https://mitchyh.com/blog/angular-stateful-signals" target="_blank">here</a>.
+    </span>
+  </app-plug>
+
+  <h2>Demo</h2>
+
+  @defer (when !isLoading()) {
+    <p>{{ state().result }}</p>
+  } @placeholder {
+    <p>Getting welcome message...</p>
+  }
+
+  @if (hasError()) {
+    <p>Something went wrong...</p>
+  }
+
+  <form [formGroup]="formGroup">
+    <div class="form-control">
+      <label for="throw-error">Throw error</label>
+      <input type="checkbox" formControlName="throwError" id="throw-error" />
+    </div>
+  </form>
+
+  <button (click)="onFetchWelcomeMessage()">Fetch welcome message</button>
+</main>

@@ -58,4 +58,8 @@ export class StatefulSignal<TInput> {
   update(value?: TInput): void {
     this.$signalSubject.next(value);
   }
+
+  destroy(): void {
+    this.$signalSubject.complete();
+  }
 }

@@ -1,37 +1,14 @@
 <main>
-  <h1>Stateful Signals | Example</h1>
+  <h1>Fetching API resources using Signals</h1>
 
-  <div class="plug-block">
-    <p class="plug-title">Created by mitchHay</p>
-    <p>
-      This Angular example is used to demonstrate the stateful signal approach that I explained <a href="https://mitchyh.com/blog/angular-stateful-signals" target="_blank">here</a>.
-    </p>
+  <app-plug title="Examples">
+    <span>
+      This application demonstrates several approaches to requesting API resources using Signals and Observables.
+    </span>
 
     <ul>
-      <li><a href="https://x.com/mitchy_hay" target="_blank">Follow me on X</a></li>
-      <li><a href="https://github.com/mitchHay" target="_blank">Follow me on GitHub</a></li>
-      <li><a href="https://mitchyh.com" target="_blank">Read my blog</a></li>
+      <li><a routerLink="/stateful-signal-example">Stateful Signals (pre Angular 19)</a></li>
+      <li><a routerLink="/resource-example">Resource Signals (Angular 19+)</a></li>
     </ul>
-  </div>
-
-  <h2>Demo</h2>
-
-  @defer (when !isLoading()) {
-    <p>{{ state().result }}</p>
-  } @placeholder {
-    <p>Getting welcome message...</p>
-  }
-
-  @if (hasError()) {
-    <p>Something went wrong...</p>
-  }
-
-  <form [formGroup]="formGroup">
-    <div class="form-control">
-      <label for="throw-error">Throw error</label>
-      <input type="checkbox" formControlName="throwError" id="throw-error" />
-    </div>
-  </form>
-
-  <button (click)="onFetchWelcomeMessage()">Fetch welcome message</button>
+  </app-plug>
 </main>
