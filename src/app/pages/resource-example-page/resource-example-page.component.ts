@@ -17,6 +17,7 @@ export class ResourceExamplePageComponent implements OnDestroy {
     request: () => this.welcomeMessageRequest(),
     loader: (params) => this.apiService.getWelcomeMessage(params.request),
   });
+
   readonly formGroup = new FormGroup({
     throwError: new FormControl(false),
   });

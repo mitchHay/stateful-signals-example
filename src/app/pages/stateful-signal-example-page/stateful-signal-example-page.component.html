@@ -9,13 +9,13 @@
 
   <h2>Demo</h2>
 
-  @defer (when !isLoading()) {
-    <p>{{ state().result }}</p>
+  @defer (when !welcomeMessage.isLoading()) {
+    <p>{{ welcomeMessage.value() }}</p>
   } @placeholder {
     <p>Getting welcome message...</p>
   }
 
-  @if (hasError()) {
+  @if (!!welcomeMessage.error()) {
     <p>Something went wrong...</p>
   }
 
